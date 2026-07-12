@@ -1,0 +1,63 @@
+<!--index.wxml-->
+<view class="page-container">
+    <!-- 功能区 -->
+    <view class="custom-navbar" style="height: {{navBarHeight}}px;">
+        <!-- 占位状态栏高度 -->
+        <view style="height: {{statusBarHeight}}px;"></view>
+
+        <view class="navbar-content" style="height: {{navBarHeight - statusBarHeight}}px;">
+            <!-- 左侧返回按钮 -->
+            <view wx:if="{{showBack}}" class="back-area" bindtap="onBack">
+                <!-- <image src="/images/back-arrow.png" class="back-icon"></image> -->
+            </view>
+
+            <view class="btn" bind:tap="onShowMore">
+                <image src="../../image/more.svg" />
+            </view>
+
+            <view class="btn" bind:tap="onSwitchWeek">
+                <text>第{{nowWeekNumber}}周</text>
+                <image src="../../image/down.svg" style="padding-left: 4px;" />
+            </view>
+
+            <view class="btn" bind:tap="onSwitchGrid">
+                <image src="../../image/grid.svg" />
+            </view>
+
+            <!-- 右侧占位，与胶囊按钮等宽，避免标题被遮挡 -->
+            <view style="width: {{menuButtonWidth}}px; margin-right: {{menuButtonRight}}px;"></view>
+        </view>
+    </view>
+
+    <!-- 因为导航栏固定定位，页面内容需设置 margin-top 或 padding-top -->
+    <view style="height: {{navBarHeight}}px;"></view>
+
+    <!-- 主区域 -->
+    <scroll-view class="schedule-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+        <view class="schedule-grid">
+            <!-- 表头行：空角 + 星期 -->
+            <view class="grid-header">*</view>
+            <view class="grid-header" wx:for="{{wek}}" wx:key="*this">{{item}}</view>
+
+            <!-- 数据区：用 block 循环，每个格子自己占位 -->
+            <block wx:for="{{schedule}}" wx:key="*this">
+                <!-- 节次列：开始时间 + 数字 + 结束时间 -->
+                <view class="grid-period">
+                    <view class="time-start">{{course_time[index][0]}}</view>
+                    <view class="number">{{index + 1}}</view>
+                    <view class="time-end">{{course_time[index][1]}}</view>
+                </view>
+
+                <!-- 课程格子循环 -->
+                <view wx:for="{{item}}" wx:for-item="cell" wx:key="dayIndex"
+                    class="grid-cell {{cell.course ? 'has-course' : ''}}"
+                    style="{{cell.visible ? 'grid-row: span ' + cell.rowspan + ';' : 'display: none;'}}">
+                    <block wx:if="{{cell.course && cell.visible}}">
+                        <text class="c-name">{{cell.course.name}}</text>
+                        <text class="c-room">{{cell.course.room}}</text>
+                    </block>
+                </view>
+            </block>
+        </view>
+    </scroll-view>
+</view>

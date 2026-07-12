@@ -1,0 +1,162 @@
+/**index.scss**/
+
+@import "../../app.scss";
+
+page {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; // 撑满整个屏幕高度
+}
+
+.schedule-scroll {
+    flex: 1;
+    width: 100%;
+    height: 500px;
+}
+
+.custom-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    box-sizing: border-box;
+}
+
+.navbar-content {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-left: 4px;
+    /* background-color: blanchedalmond; */
+}
+
+.btn {
+    background-color: $btn-color-bg;
+    width: auto;
+    /* height: 100%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+.btn image {
+    width: 20px;
+    height: 20px;
+}
+
+.back-icon {
+    width: 40rpx;
+    height: 40rpx;
+}
+
+.title {
+    flex: 1;
+    text-align: center;
+    font-size: 32rpx;
+    font-weight: 500;
+}
+
+$border-color: #ddd;
+$header-bg: #f5f7fa;
+$period-bg: #fafafa;
+$course-bg: #e9f3ff;
+$text-primary: #333;
+$text-secondary: #888;
+$text-blue: #1a73e8;
+$cell-padding: 16rpx 4rpx;
+$min-row-height: 180rpx;
+$period-width: 8%;
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: $period-width repeat(7, 1fr);
+    // border: 2rpx solid $border-color;
+    background: #fff;
+    overflow: visible;
+
+    .grid-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: $header-bg;
+        font-weight: 600;
+        font-size: 26rpx;
+        color: $text-primary;
+        padding: $cell-padding;
+        text-align: center;
+        border-bottom: 2rpx solid $border-color;
+        border-right: 1rpx solid #eee;
+    }
+
+    .grid-period {
+        background: $period-bg;
+        font-size: 24rpx;
+        color: $text-secondary;
+        display: flex;
+        flex-direction: column; // 纵向排列：序号、开始、结束
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1rpx solid #eee;
+        border-right: 1rpx solid #eee;
+        min-height: $min-row-height;
+        padding: 8rpx 4rpx; // 给点内边距，不贴边
+        box-sizing: border-box;
+
+        .number {
+            font-weight: 600;
+            font-size: 26rpx;
+            color: #666;
+            margin-bottom: 4rpx;
+        }
+
+        .time-start,
+        .time-end {
+            color: #8799a3;
+            font-size: 20rpx;
+            line-height: 1.4;
+        }
+
+        // 可选：区分上下午/晚间
+        .time-start {
+            margin-top: 2rpx;
+        }
+    }
+
+    .grid-cell {
+        border-bottom: 1rpx solid #eee;
+        border-right: 1rpx solid #eee;
+        min-height: $min-row-height;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 24rpx;
+        padding: 8rpx 4rpx;
+        box-sizing: border-box;
+
+        // 有课程的高亮状态
+        &.has-course {
+            background: $course-bg;
+            border-radius: 8rpx;
+        }
+
+        .c-name {
+            font-weight: 600;
+            color: $text-blue;
+        }
+
+        .c-room {
+            font-size: 22rpx;
+            color: #666;
+        }
+    }
+}

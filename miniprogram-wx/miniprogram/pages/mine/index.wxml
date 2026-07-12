@@ -1,0 +1,15 @@
+<!--pages/mine/index.wxml-->
+<view style="min-height: 80px;">a</view>
+<!-- <scroll-view scroll-y> -->
+    <view class="container">
+        <view class="user">
+            <view class="icon">张</view>
+            <view class="base">
+                <view class="name">张三</view>
+                <view class="classname">软件{}班</view>
+            </view>
+            <view class="more">更多</view>
+        </view>
+        <view wx:for="{{77}}" wx:key="index">asd{{index}}</view>
+    </view>
+<!-- </scroll-view> -->
