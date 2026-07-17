@@ -1,15 +1,64 @@
 <!--pages/mine/index.wxml-->
-<view style="min-height: 80px;">a</view>
-<!-- <scroll-view scroll-y> -->
-    <view class="container">
-        <view class="user">
-            <view class="icon">张</view>
-            <view class="base">
-                <view class="name">张三</view>
-                <view class="classname">软件{}班</view>
-            </view>
-            <view class="more">更多</view>
+<!-- 导航条 -->
+<view class="custom-navbar" style="height: {{navBarHeight}}px;">
+    <!-- 占位状态栏高度 -->
+    <view style="height: {{statusBarHeight}}px;"></view>
+
+    <view class="navbar-content" style="height: {{navBarHeight - statusBarHeight}}px;">
+        <!-- 左侧返回按钮 -->
+        <view wx:if="{{showBack}}" class="back-area" bindtap="onBack">
+            <!-- <image src="/images/back-arrow.png" class="back-icon"></image> -->
         </view>
-        <view wx:for="{{77}}" wx:key="index">asd{{index}}</view>
+
+        <view class="btn" bind:tap="onSwitchWeek" style="width: 40rpx;">
+            <text>?</text>
+        </view>
+
+        <!-- 右侧占位，与胶囊按钮等宽，避免标题被遮挡 -->
+        <view style="width: {{menuButtonWidth}}px; margin-right: {{menuButtonRight}}px;"></view>
     </view>
-<!-- </scroll-view> -->
+</view>
+<!-- 主区域 -->
+<view class="container">
+    <view class="user">
+        <view class="icon">张</view>
+        <view class="base">
+            <view class="name">张三</view>
+            <view class="classname">软件{}班</view>
+        </view>
+        <view class="more">更多</view>
+    </view>
+    <view class="login">
+        <view class="btn-login center" bind:tap="onSwitchShowLoginModal">登录</view>
+        <!-- <view class="btn-help center">?</view> -->
+    </view>
+</view>
+
+<!-- 功能弹窗模块 -->
+<!-- 登录教务系统 -->
+<view class="modal-overlay" wx:if="{{is_show_login_modal}}" bindtap="onSwitchShowLoginModal">
+    <view class="login-container"  catch:tap="nop">
+        <!-- title -->
+        <view class="title center">
+            <text>登录教务系统</text>
+        </view>
+        <!-- account -->
+        <view>
+            <text class="label">账号</text>
+            <input class="input" type="text" placeholder="请输入学号" value="{{account}}" bindinput="onAccountInput" />
+        </view>
+        <!-- pwd -->
+        <view>
+            <text class="label">密码</text>
+            <input class="input" type="text" placeholder="请输入密码" value="{{password}}" bindinput="onPasswordInput" />
+        </view>
+        <!-- btn -->
+        <view>
+            <view class="btn-login center" bindtap="handleLoginJWXT">
+                {{is_logging_in ? '登录中...' : '登 录'}}
+            </view>
+        </view>
+        <!-- msg -->
+        <text style="align-self: flex-start;">{{msg_login_jwxt}}</text>
+    </view>
+</view>

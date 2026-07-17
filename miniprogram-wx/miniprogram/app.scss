@@ -1,2 +1,9 @@
 /**app.wxss**/
 $btn-color-bg: #e9f3ff;
+$btn-color-text: #4ea0ff;
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
