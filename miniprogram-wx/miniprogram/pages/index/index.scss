@@ -73,7 +73,7 @@ $text-primary: #333;
 $text-secondary: #888;
 $text-blue: #1a73e8;
 $cell-padding: 16rpx 4rpx;
-$min-row-height: 180rpx;
+$min-row-height: 120rpx;
 $period-width: 8%;
 
 .schedule-grid {
@@ -152,6 +152,13 @@ $period-width: 8%;
         .c-name {
             font-weight: 600;
             color: $text-blue;
+
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            /* 行数 */
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .c-room {

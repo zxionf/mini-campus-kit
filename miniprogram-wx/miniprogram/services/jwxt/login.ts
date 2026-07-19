@@ -22,7 +22,13 @@ export const login_jwxt = async (username: string, password: string): Promise<bo
         const is_success = /<meta name="format-detection" content="telephone=no,email=no,adress=no">/i.test(res)
         console.log('is success', is_success)
         if (!is_success) throw new Error('账号或密码错误');
-        console.log('logged in jwxt', res)
+        // console.log('logged in jwxt', res)
+        const xhid_match = res.match(/<input[^>]*id="xhid"[^>]*value="([^"]*)"/)
+        const encodeId_match = res.match(/<input[^>]*id="encodeId"[^>]*value="([^"]*)"/)
+        const xhid = xhid_match?.[1] || ''
+        const encodeId = encodeId_match?.[1] || ''
+        store.set('xhid', xhid)
+        store.set('encodeId', encodeId)
         store.set('student_id', username)
         store.set('student_encrpted_pwd', encryptedpwd)
         return true

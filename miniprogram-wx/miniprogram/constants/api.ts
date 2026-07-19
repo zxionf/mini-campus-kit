@@ -4,4 +4,6 @@ export const PUB_KEY_JWXT: string = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDcwU0
 
 export const API_JWXT = {
     LOGIN: '/admin/login',
+    get_xs_jbxx: '/admin/xsd/xyjc/getXsjbxx', // 获取学生基本信息 学生端/校园基础/获取学生基本信息
+    get_sdpkkb: '/admin/pkgl/xskb/sdpkkbList' // 获取课表 排课管理/学生课表/手动排课课表列表
 } as const;

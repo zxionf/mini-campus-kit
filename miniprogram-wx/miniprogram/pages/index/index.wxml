@@ -37,7 +37,11 @@
         <view class="schedule-grid">
             <!-- 表头行：空角 + 星期 -->
             <view class="grid-header">*</view>
-            <view class="grid-header" wx:for="{{wek}}" wx:key="*this">{{item}}</view>
+            <!-- <view class="grid-header" wx:for="{{wek}}" wx:key="*this">{{item}}</view> -->
+            <view class="grid-header" wx:for="{{7}}" wx:key="index">
+                <view class="day">{{wek[index]}}</view>
+                <view class="date">{{wek_dates[index]}}</view>
+            </view>
 
             <!-- 数据区：用 block 循环，每个格子自己占位 -->
             <block wx:for="{{schedule}}" wx:key="*this">
