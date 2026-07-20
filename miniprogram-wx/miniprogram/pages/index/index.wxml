@@ -33,7 +33,8 @@
     <view style="height: {{navBarHeight}}px;"></view>
 
     <!-- 主区域 -->
-    <scroll-view class="schedule-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+    <scroll-view class="schedule-scroll" scroll-y enhanced show-scrollbar="{{false}}" bindtouchstart="onTouchStart"
+        bindtouchend="onTouchEnd">
         <view class="schedule-grid">
             <!-- 表头行：空角 + 星期 -->
             <view class="grid-header">*</view>
@@ -53,15 +54,25 @@
                 </view>
 
                 <!-- 课程格子循环 -->
-                <view wx:for="{{item}}" wx:for-item="cell" wx:key="dayIndex"
+                <!-- <view wx:for="{{item}}" wx:for-item="cell" wx:key="dayIndex"
                     class="grid-cell {{cell.course ? 'has-course' : ''}}"
                     style="{{cell.visible ? 'grid-row: span ' + cell.rowspan + ';' : 'display: none;'}}"
-                    data-cell="{{cell}}"
-                    bind:tap="onShowCourseDetails">
+                    data-cell="{{cell}}" bind:tap="onShowCourseDetails">
                     <block wx:if="{{cell.course && cell.visible}}">
                         <text class="c-name">{{cell.course.name}}</text>
                         <text class="c-room">{{cell.course.location}}</text>
                     </block>
+                </view> -->
+                <view wx:for="{{item}}" wx:for-item="cell" wx:key="dayIndex"
+                    class="grid-cell {{cell.course ? 'has-course' : ''}}"
+                    style="{{cell.visible ? 'grid-row: span ' + cell.rowspan + ';' : 'display: none;'}}"
+                    data-cell="{{cell}}" bind:tap="onShowCourseDetails">
+                    <view class="{{cell.course ? 'wrapper' : ''}}">
+                        <block wx:if="{{cell.course && cell.visible}}">
+                            <text class="c-name">{{cell.course.name}}</text>
+                            <text class="c-room">{{cell.course.location}}</text>
+                        </block>
+                    </view>
                 </view>
             </block>
         </view>
@@ -71,9 +82,11 @@
 <!-- 选周弹窗 -->
 <view class="modal-overlay" wx:if="{{is_show_switch_week_modal}}" bindtap="onSwitchShowSwitchWeekModal">
     <view class="modal-content" catch:tap="nop">
-        <view class="items" style="padding: 16px;">
-            <view wx:for="{{22}}" wx:key="index" data-week_number="{{index+1}}" bind:tap="onSwitchToWeek" class="iteme">
-                第{{index+1}}周</view>
+        <view class="items">
+            <view wx:for="{{zclist}}" wx:key="index" data-week_number="{{index}}" bind:tap="onSwitchToWeek" class="item">
+                <view>第{{index}}周</view>
+                <view class="rqfw">{{zclist[index].rqfw}}</view>
+                </view>
         </view>
     </view>
 </view>

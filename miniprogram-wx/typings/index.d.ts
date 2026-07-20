@@ -8,17 +8,29 @@ interface IAppOption {
 }
 
 interface IAppData {
-    token_jwxt: string
-    student_id: string
+    token_jwxt: string,
+    student_id: string,
     xs_jbxx: {
-        xh: string
-        xm: string
-        id: string
-        bjmc: string
-        dqxnxq: string
+        xh: string,
+        xm: string,
+        id: string,
+        bjmc: string,
+        dqxnxq: string,
     }
-    student_encrpted_pwd: string
-    xhid: string
-    encodeId: string
-    schedule: any[]
+    student_encrpted_pwd: string,
+    xhid: string,
+    encodeId: string,
+    schedule: any[],
+    zc: ZcData,
+}
+
+interface ZcData {
+    dqzc: number,
+    zclist: ZcList[]
+}
+interface ZcList {
+    zc: number,
+    maxrq: string,
+    minrq: string,
+    rqfw: string,
 }

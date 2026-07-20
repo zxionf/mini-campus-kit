@@ -1,6 +1,7 @@
 // index.ts
 
 import { raw_list } from "../../any";
+import store from "../../utils/storage";
 import { dates_one_week_at, strip_lable } from "../../utils/util";
 
 // 获取应用实例
@@ -15,12 +16,12 @@ interface RawData {
     zcstr: string;
 }
 interface Course {
-    start: number
-    end: number
-    name: string
-    location: string
-    day: number
-    weeks: number[]
+    start: number;
+    end: number;
+    name: string;
+    location: string;
+    day: number;
+    weeks: number[];
 }
 
 Component({
@@ -43,24 +44,41 @@ Component({
             ['20:10', '20:55'],
             ['', '21:20']],
         courses: [] as Course[], // 课程数据
-        week_num: 0,
+        week_num: 1,
         is_show_switch_week_modal: false,
-        is_show_course_details_modal: false
+        is_show_course_details_modal: false,
+        zclist: [] as ZcList[]
     },
     methods: {
-        onLoad() {
+        async onLoad() {
             // 初始化navbar
             this.init_navbar()
             // 初始化一个空课表
             this.tp_week_to(0)
+            // 设置本周的日期
+            this.setData({ wek_dates: dates_one_week_at(new Date()) })
+
+            // 获取周次列表
+            const zc = store.get('zc')
+            if (!zc) {
+                throw new Error('缺失必zc')
+            }
+            // console.log(zc)
+            const now_week_num = zc.dqzc ?? 0
+            const zclist: ZcList[] = zc.zclist || []
+            this.setData({zclist})
+
+            // console.log(this.data.zclist)
+            
+            this.setData({wek_dates: dates_one_week_at(new Date(zclist[now_week_num].minrq))})
+
             // 获取课表原始数据
             const raw_data = JSON.parse(strip_lable(raw_list))
             // 生成课表数据
             this.generate_course(raw_data.data)
             // 显示本周
-            this.tp_week_to(10)
-            // 设置本周的日期
-            this.setData({ wek_dates: dates_one_week_at(new Date()) })
+            this.tp_week_to(now_week_num)
+
         },
 
         generate_course(raw_course_list: any) {
@@ -130,11 +148,11 @@ Component({
                 }
             }
             this.setData({ courses: merged })
-            console.log(merged)
+            // console.log(merged)
         },
 
         tp_week_to(num: number) {
-            const { sectionCount, courses, wek } = this.data;
+            const { sectionCount, courses, wek, zclist } = this.data;
             // 12 x 7 表格
             const schedule = Array.from({ length: sectionCount }, () => Array(wek.length).fill(null));
 
@@ -163,7 +181,8 @@ Component({
                     }
                 })
             );
-            this.setData({ schedule: cells });
+            this.setData({ schedule: cells, week_num: num })
+            if (zclist && zclist.length > 0) this.setData({wek_dates: dates_one_week_at(new Date(zclist[num].minrq))})
         },
 
         init_navbar() {
@@ -194,7 +213,7 @@ Component({
         onShowCourseDetails(e: WechatMiniprogram.TouchEvent) {
             const selected_cell = (e.currentTarget as any).dataset.cell;
             // console.log(selected_cell);
-            if(selected_cell.course == null) return
+            if (selected_cell.course == null) return
             this.setData({
                 is_show_course_details_modal: true,
                 selected_course: selected_cell.course
@@ -207,8 +226,28 @@ Component({
         onSwitchShowClassDetailsModal() {
             this.setData({ is_show_course_details_modal: !this.data.is_show_course_details_modal })
         },
+        onTouchStart(e: WechatMiniprogram.TouchEvent) {
+            this.setData({
+                touch_start_x: e.changedTouches[0].pageX
+            })
+        },
+        onTouchEnd(e: WechatMiniprogram.TouchEvent) {
+            const endX = e.changedTouches[0].pageX;
+            const dx = endX - this.data.touch_start_x;
+            // console.log('滑动', this.data.touch_start_x, endX)
+            if (dx < -50) {
+                console.log('左滑触发');
+                this.tp_week_to(this.data.week_num + 1)
+            }
+            // 右滑判断
+            if (dx > 50) {
+                console.log('右滑触发');
+                if (this.data.week_number == 1) return
+                this.tp_week_to(this.data.week_num - 1)
+            }
+        },
         nop() {
             console.log('nop tap')
-         }
+        }
     }
 })

@@ -5,10 +5,12 @@ import { get_sdpkkb } from './services/jwxt/getsdpkkb'
 import store from './utils/storage'
 import { strip_lable } from './utils/util'
 import { raw_list } from './any'
+import { get_xlzc } from './services/jwxt/getxlzc'
+import { get_zclist } from './services/jwxt/getzclist'
 
 App<IAppOption>({
     globalData: {},
-    onLaunch() {
+    async onLaunch() {
         // 展示本地存储能力
         const logs = wx.getStorageSync('logs') || []
         logs.unshift(Date.now())
@@ -22,6 +24,9 @@ App<IAppOption>({
             },
         })
 
+        // 获取学生基本信息
+        // await get_xs_jbxx()
+
         // 获取课表
         // const jbxx = store.get('xs_jbxx')
         // if (!jbxx?.dqxnxq || !jbxx?.id) {
@@ -29,6 +34,13 @@ App<IAppOption>({
         // }
         // get_schedule(jbxx.dqxnxq, jbxx.id)
 
+
+        // 获取当前周次
+        // const num = await get_xlzc()
+        // console.log(num)
+
+        // 获取周次列表
+        // get_zclist(store.get('xs_jbxx')!.dqxnxq)
 
     },
 })
