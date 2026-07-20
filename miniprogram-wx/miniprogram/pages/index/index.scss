@@ -132,8 +132,9 @@ $period-width: 8%;
     }
 
     .grid-cell {
-        border-bottom: 1rpx solid #eee;
-        border-right: 1rpx solid #eee;
+        // border-bottom: 1rpx solid #eee;
+        // border-right: 1rpx solid #eee;
+        // border: 1rpx solid #eee;
         min-height: $min-row-height;
         display: flex;
         flex-direction: column;
@@ -142,6 +143,7 @@ $period-width: 8%;
         font-size: 24rpx;
         padding: 8rpx 4rpx;
         box-sizing: border-box;
+        margin: 4rpx;
 
         // 有课程的高亮状态
         &.has-course {
@@ -165,5 +167,30 @@ $period-width: 8%;
             font-size: 22rpx;
             color: #666;
         }
+    }
+}
+
+.modal-content {
+    width: 80%;
+    background-color: white;
+    border-radius: 40rpx;
+    padding: 20rpx;
+    // margin: 40rpx;
+    display: flex;
+    flex-direction: column;
+    gap: 20rpx;
+    .items {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .items .iteme {
+        width: calc(25% - 12px);
+        box-sizing: margin-box;
+        padding: 8px 2px;
+        margin: 4px;
+        text-align: center;
+        background-color: $btn-color-bg;
+        border-radius: 6px;
     }
 }

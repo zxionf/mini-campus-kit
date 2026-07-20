@@ -1,10 +1,11 @@
 // index.ts
 
-import { raw_list, smaller } from "../../any";
+import { raw_list } from "../../any";
 import { dates_one_week_at, strip_lable } from "../../utils/util";
 
 // 获取应用实例
-const app = getApp<IAppOption>()
+// const app = getApp<IAppOption>()
+
 interface RawData {
     kcmc: string;
     tmc: string;
@@ -17,7 +18,7 @@ interface Course {
     start: number
     end: number
     name: string
-    room: string
+    location: string
     day: number
     weeks: number[]
 }
@@ -43,6 +44,8 @@ Component({
             ['', '21:20']],
         courses: [] as Course[], // 课程数据
         week_num: 0,
+        is_show_switch_week_modal: false,
+        is_show_course_details_modal: false
     },
     methods: {
         onLoad() {
@@ -51,7 +54,7 @@ Component({
             // 初始化一个空课表
             this.tp_week_to(0)
             // 获取课表原始数据
-            const raw_data = JSON.parse(strip_lable(smaller))
+            const raw_data = JSON.parse(strip_lable(raw_list))
             // 生成课表数据
             this.generate_course(raw_data.data)
             // 显示本周
@@ -63,7 +66,7 @@ Component({
         generate_course(raw_course_list: any) {
             // 清洗数据
             const cleaned = raw_course_list.map((item: RawData) => ({
-                name: item.kcmc, room: item.croommc, djc: item.djc, day: item.xingqi - 1, weeks: item.zcstr.split(',').map(Number),
+                name: item.kcmc, location: item.croommc, djc: item.djc, day: item.xingqi - 1, weeks: item.zcstr.split(',').map(Number),
                 key: `${item.kcmc}_${item.tmc}_${item.croommc}`
             }))
             // 分组 day + key
@@ -118,7 +121,7 @@ Component({
                     merged.push({
                         name: first.name,
                         // teacher: first.teacher,
-                        room: first.room,
+                        location: first.location,
                         day: group.day,
                         start: chunk.start,
                         end: chunk.end,
@@ -126,7 +129,7 @@ Component({
                     });
                 }
             }
-            this.setData({courses: merged})
+            this.setData({ courses: merged })
             console.log(merged)
         },
 
@@ -138,9 +141,9 @@ Component({
             // 先填充 这一步使用课程数据填入表格
             courses.forEach(c => {
                 if (c.weeks.includes(num))
-                for (let s = c.start; s <= c.end; s++) {
-                    schedule[s - 1][c.day] = c;
-                }
+                    for (let s = c.start; s <= c.end; s++) {
+                        schedule[s - 1][c.day] = c;
+                    }
             });
 
             // 再计算每个格子的可见性与跨行高度
@@ -160,7 +163,7 @@ Component({
                     }
                 })
             );
-            this.setData({ schedule: cells, wek });
+            this.setData({ schedule: cells });
         },
 
         init_navbar() {
@@ -180,6 +183,32 @@ Component({
                 menuButtonWidth: menuButtonInfo.width,
                 menuButtonRight: systemInfo.windowWidth - menuButtonInfo.right
             });
-        }
+        },
+
+        onSwitchToWeek(e: WechatMiniprogram.TouchEvent) {
+            const week_number = e.currentTarget.dataset.week_number
+            this.tp_week_to(week_number)
+            this.setData({ week_num: week_number })
+            this.onSwitchShowSwitchWeekModal()
+        },
+        onShowCourseDetails(e: WechatMiniprogram.TouchEvent) {
+            const selected_cell = (e.currentTarget as any).dataset.cell;
+            // console.log(selected_cell);
+            if(selected_cell.course == null) return
+            this.setData({
+                is_show_course_details_modal: true,
+                selected_course: selected_cell.course
+            })
+            // console.log(this.data.selected_course)
+        },
+        onSwitchShowSwitchWeekModal() {
+            this.setData({ is_show_switch_week_modal: !this.data.is_show_switch_week_modal })
+        },
+        onSwitchShowClassDetailsModal() {
+            this.setData({ is_show_course_details_modal: !this.data.is_show_course_details_modal })
+        },
+        nop() {
+            console.log('nop tap')
+         }
     }
 })

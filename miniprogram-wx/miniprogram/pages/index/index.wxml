@@ -15,8 +15,8 @@
                 <image src="../../image/more.svg" />
             </view>
 
-            <view class="btn" bind:tap="onSwitchWeek">
-                <text>第{{nowWeekNumber}}周</text>
+            <view class="btn" bind:tap="onSwitchShowSwitchWeekModal">
+                <text>第{{week_num}}周</text>
                 <image src="../../image/down.svg" style="padding-left: 4px;" />
             </view>
 
@@ -44,7 +44,7 @@
             </view>
 
             <!-- 数据区：用 block 循环，每个格子自己占位 -->
-            <block wx:for="{{schedule}}" wx:key="*this">
+            <block wx:for="{{schedule}}" wx:key="index">
                 <!-- 节次列：开始时间 + 数字 + 结束时间 -->
                 <view class="grid-period">
                     <view class="time-start">{{course_time[index][0]}}</view>
@@ -55,13 +55,37 @@
                 <!-- 课程格子循环 -->
                 <view wx:for="{{item}}" wx:for-item="cell" wx:key="dayIndex"
                     class="grid-cell {{cell.course ? 'has-course' : ''}}"
-                    style="{{cell.visible ? 'grid-row: span ' + cell.rowspan + ';' : 'display: none;'}}">
+                    style="{{cell.visible ? 'grid-row: span ' + cell.rowspan + ';' : 'display: none;'}}"
+                    data-cell="{{cell}}"
+                    bind:tap="onShowCourseDetails">
                     <block wx:if="{{cell.course && cell.visible}}">
                         <text class="c-name">{{cell.course.name}}</text>
-                        <text class="c-room">{{cell.course.room}}</text>
+                        <text class="c-room">{{cell.course.location}}</text>
                     </block>
                 </view>
             </block>
         </view>
     </scroll-view>
+</view>
+
+<!-- 选周弹窗 -->
+<view class="modal-overlay" wx:if="{{is_show_switch_week_modal}}" bindtap="onSwitchShowSwitchWeekModal">
+    <view class="modal-content" catch:tap="nop">
+        <view class="items" style="padding: 16px;">
+            <view wx:for="{{22}}" wx:key="index" data-week_number="{{index+1}}" bind:tap="onSwitchToWeek" class="iteme">
+                第{{index+1}}周</view>
+        </view>
+    </view>
+</view>
+
+<!-- 课程详情 -->
+<view class="modal-overlay" wx:if="{{is_show_course_details_modal}}" bindtap="onSwitchShowClassDetailsModal">
+    <view class="modal-content" catchtap="nop">
+        <view class="bora card list">
+            <view class="item center">{{selected_course.name}}</view>
+            <view class="item">@{{selected_course.location}}</view>
+            <view class="item">{{selected_course.teacherName}}</view>
+            <view class="item">{{selected_course.weeks}}</view>
+        </view>
+    </view>
 </view>
