@@ -21,7 +21,7 @@ const cookieStore = (function () {
 
             const successCallback = options.success
             options.success = function (response: any) {
-                response.header = response.header || response.headers
+                response.header = response.header || response.headers || {}
                 let responseCookies = response.header ? response.header['Set-Cookie'] || response.header['set-cookie'] : ''
                 if (responseCookies) {
                     responseCookies = responseCookies.toString().replace(/\;([^\s\;]*?(?=\=))/ig, ',$1')
@@ -31,6 +31,7 @@ const cookieStore = (function () {
             }
         }
 
+        
         return this(options)
     }
 

@@ -64,7 +64,7 @@
                     </block>
                 </view> -->
                 <view wx:for="{{item}}" wx:for-item="cell" wx:key="dayIndex"
-                    class="grid-cell {{cell.course ? 'has-course' : ''}}"
+                    class="grid-cell {{is_show_grid ? 'grid' : ''}}"
                     style="{{cell.visible ? 'grid-row: span ' + cell.rowspan + ';' : 'display: none;'}}"
                     data-cell="{{cell}}" bind:tap="onShowCourseDetails">
                     <view class="{{cell.course ? 'wrapper' : ''}}">

@@ -23,7 +23,7 @@
   },
   "include": [
     "./**/*.ts"
-, "miniprogram/utils/cook/api.js"  ],
+  ],
   "exclude": [
     "node_modules"
   ]

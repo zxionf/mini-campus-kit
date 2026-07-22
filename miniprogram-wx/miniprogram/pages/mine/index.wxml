@@ -21,17 +21,21 @@
 <!-- 主区域 -->
 <view class="container">
     <view class="user">
-        <view class="icon">张</view>
+        <view class="icon">T</view>
         <view class="base">
-            <view class="name">张三</view>
+            <view class="name">Test</view>
             <view class="classname">软件{}班</view>
         </view>
         <view class="more">更多</view>
     </view>
-    <view class="login">
+    <view class="func">
         <view class="btn-login center" bind:tap="onSwitchShowLoginModal">登录</view>
+        <!-- <view class="btn-login center" bind:tap="onTestLogin">测试登录</view> -->
+        <view class="btn-login center" bind:tap="onGetSchedule">拉取数据</view>
+        <view class="btn-login center" bind:tap="onCleanAll">清除数据</view>
         <!-- <view class="btn-help center">?</view> -->
     </view>
+    <view ></view>
 </view>
 
 <!-- 功能弹窗模块 -->

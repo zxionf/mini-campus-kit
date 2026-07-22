@@ -123,10 +123,11 @@ page {
     }
 }
 
-// 登录区
-.login {
+
+.func {
     background-color: white;
     display: flex;
+    flex-direction: column;
     gap: 20rpx;
     border-radius: 40rpx;
     padding: 20rpx;
@@ -134,7 +135,7 @@ page {
     .btn-login {
         flex: 1;
         background-color: $btn-color-bg;
-        height: 80rpx;
+        min-height: 80rpx;
         color: #4ea0ff;
         font-weight: 800;
         border-radius: 20rpx;

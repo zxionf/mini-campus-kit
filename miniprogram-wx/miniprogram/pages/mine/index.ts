@@ -1,4 +1,13 @@
+import { API_JWXT, BASE_URL_JWXT, PUB_KEY_JWXT } from "../../constants/api";
+import { get_sdpkkb } from "../../services/jwxt/getsdpkkb";
+import { get_xlzc } from "../../services/jwxt/getxlzc";
+import { get_xs_jbxx } from "../../services/jwxt/getxsjbxx";
+import { get_zclist } from "../../services/jwxt/getzclist";
 import { login_jwxt } from "../../services/jwxt/login";
+import request_jwxt from "../../services/request";
+import cookieStore from "../../utils/cookie/cookieProxy";
+import { jsencrypt } from "../../utils/encrypt";
+import store from "../../utils/storage";
 
 // pages/mine/index.ts
 Page({
@@ -112,6 +121,66 @@ Page({
             // this.setData({ msg_login_jwxt: err.message, is_logging_in: false });
         }
 
+    },
+    async onTestLogin() {
+        // 登录
+        const username = ''
+        const password = ''
+        const encryptedpwd = jsencrypt(password, PUB_KEY_JWXT)
+
+        cookieStore.clearCookies()
+        wx.clearStorageSync()
+
+        await request_jwxt({ url: '' })
+
+        const res = await request_jwxt({
+            url: API_JWXT.LOGIN,
+            method: 'POST',
+            header: {
+                // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Accept': '*/*',
+                // 'Accept-Encoding': 'gzip, deflate, br',
+                // 'Accept-Language': 'zh-CN,zh;q=0.9',
+                // 'Connection': 'keep-alive',
+                // 'Content-Length': '216',
+                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                // 'Host': 'jwxt.hbut.edu.cn',
+                'Referer': 'jwxt.hbut.edu.cn'
+                //uid=be01fa55-b931-4b13-95dd-f6013e576a1e; route=1a0b45d3f0e96a4fc8cba411a688b509
+            },
+            data: {
+                username: username,
+                password: encryptedpwd,
+                vcode: '',
+            }
+
+        })
+
+        const is_success = /<meta name="format-detection" content="telephone=no,email=no,adress=no">/i.test(res)
+        console.log('is success', is_success)
+    },
+    async onGetSchedule(){
+        // 获取学生基本信息
+        await get_xs_jbxx()
+
+        // 获取课表
+        const jbxx = store.get('xs_jbxx')
+        if (!jbxx?.dqxnxq || !jbxx?.id) {
+            throw new Error('缺失必要信息，请重新登录')
+        }
+        get_sdpkkb(jbxx.dqxnxq, jbxx.id)
+
+
+        // 获取当前周次
+        const num = await get_xlzc()
+        console.log(num)
+
+        // 获取周次列表
+        get_zclist(store.get('xs_jbxx')!.dqxnxq)
+    },
+    onCleanAll() {
+        console.log('clean all')
+        wx.clearStorage()
     },
     nop() { }
 

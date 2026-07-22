@@ -47,6 +47,7 @@ Component({
         week_num: 1,
         is_show_switch_week_modal: false,
         is_show_course_details_modal: false,
+        is_show_grid: true,
         zclist: [] as ZcList[]
     },
     methods: {
@@ -54,11 +55,11 @@ Component({
             // 初始化navbar
             this.init_navbar()
             // 初始化一个空课表
-            this.tp_week_to(0)
+            this.tp_week_to(1)
             // 设置本周的日期
             this.setData({ wek_dates: dates_one_week_at(new Date()) })
 
-            // 获取周次列表
+            // // 获取周次列表
             const zc = store.get('zc')
             if (!zc) {
                 throw new Error('缺失必zc')
@@ -77,7 +78,7 @@ Component({
             // 生成课表数据
             this.generate_course(raw_data.data)
             // 显示本周
-            this.tp_week_to(now_week_num)
+            // this.tp_week_to(now_week_num)
 
         },
 
@@ -245,6 +246,9 @@ Component({
                 if (this.data.week_number == 1) return
                 this.tp_week_to(this.data.week_num - 1)
             }
+        },
+        onSwitchGrid(){
+            this.setData({is_show_grid: !this.data.is_show_grid})
         },
         nop() {
             console.log('nop tap')

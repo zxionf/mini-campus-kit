@@ -132,10 +132,9 @@ $period-width: 8%;
     }
 
     .grid-cell {
-        // border-bottom: 1rpx solid #eee;
-        // border-right: 1rpx solid #eee;
-        outline: 1rpx solid #eee;
-        border: 1rpx solid #eee;
+
+        // outline: 1rpx solid #eee;
+        // border: 1rpx solid #eee;
         min-height: $min-row-height;
         display: flex;
         flex-direction: column;
@@ -145,17 +144,16 @@ $period-width: 8%;
         padding: 8rpx 4rpx;
         box-sizing: border-box;
 
-        .wrapper{
+        .wrapper {
             // margin: 4rpx;
             background-color: $course-bg;
             height: 100%;
             border-radius: 8rpx;
         }
 
-        // 有课程的高亮状态
-        &.has-course {
-            // background: $course-bg;
-            border-radius: 8rpx;
+        &.grid {
+            border-bottom: 1rpx solid #eee;
+            border-right: 1rpx solid #eee;
         }
 
         .c-name {

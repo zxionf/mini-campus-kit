@@ -11,14 +11,21 @@ export const login_jwxt = async (username: string, password: string): Promise<bo
             url: API_JWXT.LOGIN,
             method: 'POST',
             header: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                // 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36 Edg/141.0.0.0',
+                // 'Referer': BASE_URL_JWXT+'/',
+                // 'Origin': BASE_URL_JWXT,
+                // 'Host':'jwxt.hbut.edu.cn'
+
             },
             data: {
                 username: username,
                 password: encryptedpwd,
-                referer: BASE_URL_JWXT
+                
             }
         })
+        console.log(res)
         const is_success = /<meta name="format-detection" content="telephone=no,email=no,adress=no">/i.test(res)
         console.log('is success', is_success)
         if (!is_success) throw new Error('账号或密码错误');

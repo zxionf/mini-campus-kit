@@ -9,6 +9,7 @@ interface RequestOptions {
 }
 
 const request_jwxt = <T = any>(options: RequestOptions): Promise<T> => {
+    // const cookie_store = cook
     return new Promise((resolve, reject) => {
         wx.request({
             url: BASE_URL_JWXT + options.url,
@@ -18,6 +19,7 @@ const request_jwxt = <T = any>(options: RequestOptions): Promise<T> => {
                 ...options.header,
             },
             success(res: any) {
+                console.log(res.header)
                 if (res.statusCode === 200) {
                     resolve(res.data as T);
                 } else {
